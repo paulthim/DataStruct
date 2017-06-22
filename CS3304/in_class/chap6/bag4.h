@@ -93,7 +93,7 @@ namespace main_savitch_6A
 		void insert(const Item& entry);
 		void operator =(const bag& source);
 		void operator +=(const bag& addend);
-		void reserve(size_type capacity);
+		void reserve(size_type new_capacity);
 		// CONSTANT MEMBER FUNCTIONS
 		size_type count(const Item& target) const;
 		Item grab( ) const;

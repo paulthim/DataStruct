@@ -1,0 +1,36 @@
+#include <cassert>
+
+namespace main_savitch_8B
+{
+	template <class Item>
+	queue<Item>::queue() {
+		data = new Item[CAPACITY];
+		first = 0;
+		last = CAPACITY-1;
+		used = 0;
+	}
+	
+	// MODIFICATION MEMBER FUNCTIONS
+	template <class Item>
+	void queue<Item>::pop() {
+		if (empty())
+			return;
+		first = next_index(first);
+		count--;
+	}
+	
+	template <class Item>
+	void queue<Item>::push(const Item& entry) {
+		if (count == CAPACITY)
+			return;
+		last = next_index[last];
+		data[last] = entry;
+		count++;
+	}
+	
+	// CONSTANT MEMBER FUNCTIONS
+	Item front( ) const {
+		assert(!empty());
+		return data[first];
+	}
+}

@@ -1,12 +1,13 @@
 #include <algorithm>
 #include <cassert>
 #include <cstdlib>
+#include "bag4.h"
 
 namespace main_savitch_6A
 {
 	// TYPEDEFS and MEMBER CONSTANTS
 	template <class Item>
-	const typename bag<Item>::DEFAULT_CAPACITY;
+	const typename bag<Item>::size_type bag<Item>::DEFAULT_CAPACITY;
 	
 	// CONSTRUCTORS and DESTRUCTOR
 	template <class Item>
@@ -17,7 +18,7 @@ namespace main_savitch_6A
 	}
 	
 	template <class Item>
-	bag<Item>::bag(const sourcebag<Item>& source) {
+	bag<Item>::bag(const bag<Item>& source) {
 		data = new Item[source.capacity];
 		capacity = source.capacity;
 		used = source.used;
@@ -30,15 +31,107 @@ namespace main_savitch_6A
 	}
 	
 	// MODIFICATION MEMBER FUNCTIONS
-	size_type bag<Item>::erase(const Item& target);
-	bool bag<Item>::erase_one(const Item& target);
-	void bag<Item>::insert(const Item& entry);
-	void bag<Item>::operator =(const bag& source);
-	void bag<Item>::operator +=(const bag& addend);
-	void bag<Item>::reserve(size_type capacity);
+	template <class Item>
+	typename bag<Item>::size_type bag<Item>::erase(const Item& target)
+	// Library facilities used: cstdlib, node1.h
+	{
+		size_type answer = 0;
+		size_type index = 0;
+		
+		while (index < used) {
+			if (data[index] == target) {
+				used--;
+				data[index] = data[used];
+				answer++;
+			} else
+				index++;
+		}
+		return answer;
+	}
+	
+	template <class Item>
+	bool bag<Item>::erase_one(const Item& target) {
+		size_type index;
+		
+		index = 0;
+		while ((index < used) && (data[index] != target))
+			index++;
+		
+		if (index == used)
+			return false;
+		
+		--used;
+		data[index] = data[used];
+		return true;
+	}
+	
+	template <class Item>
+	void bag<Item>::insert(const Item& entry) {
+		if (used == capacity)
+			reserve(used*2);
+		data[used] = entry;
+		used++;
+	}
+	
+	template <class Item>
+	void bag<Item>::operator =(const bag& source) {
+		value_type* new_data;
+		if (this == &source)
+			return;
+		
+		if (capacity != source.capacity) {
+			new_data = new value_type[source.capacity];
+			delete [] data;
+			data = new_data;
+			capacity = source.capacity;
+		}
+		
+		used = source.used;
+		std::copy(source.data, source.data+used, data);
+	}
+	
+	template <class Item>
+	void bag<Item>::operator +=(const bag& addend) {
+		if (used + addend.used > capacity)
+			reserve(used + addend.used);
+		std::copy(addend.data, addend.data + addend.used, data + used);
+		used += addend.used;
+	}
+	
+	template <class Item>
+	void bag<Item>::reserve(size_type new_capacity) {
+		if (new_capacity == capacity)
+			return;
+		
+		if (new_capacity < used)
+			new_capacity = used;
+		
+		value_type* larger_array;
+		larger_array = new value_type[new_capacity];
+		std::copy(data, data+used, larger_array);
+		delete [] data;
+		data = larger_array;
+		capacity = new_capacity;
+	}
 	
 	// CONSTANT MEMBER FUNCTIONS
-	size_type bag<Item>::count(const Item& target) const;
-	Item bag<Item>::grab( ) const;
-	size_type bag<Item>::size( ) const { return used; }
+	template <class Item>
+	typename bag<Item>::size_type bag<Item>::count(const Item& target) const {
+		size_type answer;
+		size_type i;
+		answer = 0;
+		for (i = 0; i < used; i++)
+			if (target == data[i])
+				answer++;
+		return answer;
+	}
+	
+	template <class Item>
+	Item bag<Item>::grab( ) const {
+		size_type i;
+		
+		assert(size() > 0);
+		i = (rand( ) % size( )) + 1;
+		return data[i];
+	}
 }
