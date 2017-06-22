@@ -1,0 +1,44 @@
+#include <algorithm>
+#include <cassert>
+#include <cstdlib>
+
+namespace main_savitch_6A
+{
+	// TYPEDEFS and MEMBER CONSTANTS
+	template <class Item>
+	const typename bag<Item>::DEFAULT_CAPACITY;
+	
+	// CONSTRUCTORS and DESTRUCTOR
+	template <class Item>
+	bag<Item>::bag(size_type initial_capacity) {
+		data = new Item[initial_capacity];
+		capacity = initial_capacity;
+		used = 0;
+	}
+	
+	template <class Item>
+	bag<Item>::bag(const sourcebag<Item>& source) {
+		data = new Item[source.capacity];
+		capacity = source.capacity;
+		used = source.used;
+		std::copy(source.data, source.data+used, data);
+	}
+	
+	template <class Item>
+	bag<Item>::~bag() {
+		delete [] data;
+	}
+	
+	// MODIFICATION MEMBER FUNCTIONS
+	size_type bag<Item>::erase(const Item& target);
+	bool bag<Item>::erase_one(const Item& target);
+	void bag<Item>::insert(const Item& entry);
+	void bag<Item>::operator =(const bag& source);
+	void bag<Item>::operator +=(const bag& addend);
+	void bag<Item>::reserve(size_type capacity);
+	
+	// CONSTANT MEMBER FUNCTIONS
+	size_type bag<Item>::count(const Item& target) const;
+	Item bag<Item>::grab( ) const;
+	size_type bag<Item>::size( ) const { return used; }
+}

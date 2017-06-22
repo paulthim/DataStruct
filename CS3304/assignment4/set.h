@@ -16,6 +16,9 @@ public:
   // O(1)
   
   set(const set& source);
+  // postcondition: set has been created with a copy of the data and variables
+  // contained in source.
+  // O(source.used + 3)
 
   ~set();
 
