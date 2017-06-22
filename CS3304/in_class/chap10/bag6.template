@@ -1,0 +1,14 @@
+/*
+ * bag6.template
+ *
+ *  Created on: Jun 22, 2017
+ *      Author: pthim
+ */
+
+namespace main_savitch_10
+{
+	template <class Item>
+	bag<Item>::bag( ) {
+
+	}
+}
