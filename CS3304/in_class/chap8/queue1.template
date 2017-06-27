@@ -7,7 +7,7 @@ namespace main_savitch_8B
 		data = new Item[CAPACITY];
 		first = 0;
 		last = CAPACITY-1;
-		used = 0;
+		count = 0;
 	}
 	
 	// MODIFICATION MEMBER FUNCTIONS
@@ -29,7 +29,8 @@ namespace main_savitch_8B
 	}
 	
 	// CONSTANT MEMBER FUNCTIONS
-	Item front( ) const {
+	template <class Item>
+	Item queue<Item>::front( ) const {
 		assert(!empty());
 		return data[first];
 	}

@@ -1,0 +1,135 @@
+/*
+ * deque.template
+ *
+ *  Created on: Jun 27, 2017
+ *      Author: pthim
+ */
+
+#include <cassert>
+
+template <typename T>
+deque<T>::deque() {
+	first = 0;
+	last = 0;
+	count = 0;
+}
+
+template <typename T>
+T& deque<T>::front() {
+	assert(!empty());
+	return data[first];
+}
+
+template <typename T>
+T& deque<T>::back() {
+	assert(!empty());
+	return data[last];
+}
+
+template <typename T>
+T deque<T>::front() const {
+	assert(!empty());
+	return data[first];
+}
+
+template <typename T>
+T deque<T>::back() const {
+	assert(!empty());
+	return data[last];
+}
+
+template <typename T>
+void deque<T>::push_front(const T& entry) {
+	assert(!full());
+	if (empty()) {
+		data[0] = entry;
+	} else {
+		first = prev_index(first);
+		data[first] = entry;
+	}
+	count++;
+}
+
+template <typename T>
+void deque<T>::push_back(const T& entry) {
+	assert(!full());
+	if (empty()) {
+		data[0] = entry;
+	} else {
+		last = next_index(last);
+		data[last] = entry;
+	}
+	count++;
+}
+
+template <typename T>
+void deque<T>::pop_front() {
+	assert(!empty());
+	first = next_index(first);
+	count--;
+}
+
+template <typename T>
+void deque<T>::pop_back() {
+	assert(!empty());
+	last = prev_index(last);
+	count--;
+}
+
+template <typename T>
+typename deque<T>::size_type deque<T>::size() const {
+	return count;
+}
+
+template <typename T>
+bool deque<T>::empty() const {
+	return count == 0;
+}
+
+template <typename T>
+bool deque<T>::full() const {
+	return count == CAPACITY;
+}
+
+template <typename U>
+bool operator == (const deque<U>& dq1, const deque<U>& dq2) {
+	if (dq1.count != dq2.count || dq1.front() != dq2.front() || dq1.back() != dq2.back())
+		return false;
+	typename deque<U>::size_type i;
+	i = dq1.first;
+	//Beginning from first, increment through to the end.
+	while (i <= dq1.last) {
+		if (dq1.data[i] != dq2.data[i])
+			return false;
+		else {
+			i = dq1.next_index(i);
+		}
+	}
+	return true;
+}
+
+template <typename U>
+std::ostream& operator << (std::ostream& out, const deque<U>& dq) {
+	typename deque<U>::size_type i, n;
+	i = 0;
+	n = dq.first;
+	while (i < dq.count) {
+		out << dq.data[n] << " ";
+		n = dq.next_index(n);
+		i++;
+	}
+	return out;
+}
+
+template <typename T>
+typename deque<T>::size_type deque<T>::next_index(size_type i) const {
+	return (i + 1) % CAPACITY;
+}
+
+template <typename T>
+typename deque<T>::size_type deque<T>::prev_index(size_type i) const {
+	if (i == 0)
+		return CAPACITY-1;
+	else
+		return (i - 1) % CAPACITY;
+}
