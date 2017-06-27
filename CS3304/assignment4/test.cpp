@@ -9,6 +9,7 @@
 #include <iostream>
 #include <cassert>
 using namespace std;
+using namespace thim_assign_4;
 
 int main()
 {

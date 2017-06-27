@@ -16,7 +16,7 @@ public:
   set();
 // postcondition: empty set has been created
 
-  ~set();
+  ~set() { list_clear(head); };
 // postcondition: set has been deallocated
   
   set (const set& source);

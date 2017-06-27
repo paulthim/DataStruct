@@ -4,6 +4,8 @@
 #include <cstdlib>
 #include <iostream>
 
+using namespace thim_assign_4;
+
 class set
 {
 public:

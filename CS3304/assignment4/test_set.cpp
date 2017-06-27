@@ -1,6 +1,7 @@
 #include "set.h"
 #include <cassert>
 #include <iostream>
+using namespace thim_assign_4;
 
 int main ()
 {
