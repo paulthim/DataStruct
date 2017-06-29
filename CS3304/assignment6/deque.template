@@ -1,0 +1,75 @@
+/*
+ * deque.template
+ *
+ *  Created on: Jun 29, 2017
+ *      Author: pthim
+ */
+#include <cstdlib>
+#include "node2.h"
+
+namespace main_savitch_6b
+{
+	template <typename T>
+	deque<T>::deque() {
+		count = 0;
+		first = NULL;
+		last = NULL;
+	}
+
+	template <typename T>
+	deque<T>::~deque() {
+		list_clear(first);
+	}
+
+	template <typename T>
+	deque<T>::deque(const deque<T>& dq) {
+		list_copy(dq.first, first, last);
+		count = dq.count;
+	}
+
+	template <typename T>
+	deque<T>& deque<T>::operator = (const deque<T>& dq) {
+		if (first == dq.first)
+			return *this;
+		list_clear(first);
+		list_copy(dq.first, first, last);
+		count = dq.count;
+		return *this;
+	}
+
+	template <typename T>
+	T& deque<T>::front() {
+		assert(count != 0);
+		return first->data();
+	}
+
+	template <typename T>
+	T deque<T>::front() const {
+		assert(count != 0);
+		return first->data();
+	}
+
+	template <typename T>
+	T& deque<T>::back() {
+		assert(count != 0);
+		return last->data();
+	}
+
+	template <typename T>
+	T deque<T>::back() const {
+		assert(count != 0);
+		return last->data();
+	}
+
+	template <typename T>
+	void deque<T>::push_front(const T& entry) {
+		//TODO:
+	}
+
+	template <typename T>
+	void deque<T>::push_back(const T& entry) {
+		//TODO:
+	}
+
+
+}
