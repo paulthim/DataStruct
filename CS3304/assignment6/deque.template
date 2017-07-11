@@ -7,69 +7,135 @@
 #include <cstdlib>
 #include "node2.h"
 
-namespace main_savitch_6b
-{
-	template <typename T>
-	deque<T>::deque() {
-		count = 0;
-		first = NULL;
-		last = NULL;
-	}
+template <typename T>
+deque<T>::deque() {
+	count = 0;
+	first = NULL;
+	last = NULL;
+}
 
-	template <typename T>
-	deque<T>::~deque() {
-		list_clear(first);
-	}
+template <typename T>
+deque<T>::~deque() {
+	list_clear(first);
+}
 
-	template <typename T>
-	deque<T>::deque(const deque<T>& dq) {
-		list_copy(dq.first, first, last);
-		count = dq.count;
-	}
+template <typename T>
+deque<T>::deque(const deque<T>& dq) {
+	list_copy(dq.first, first, last);
+	count = dq.count;
+}
 
-	template <typename T>
-	deque<T>& deque<T>::operator = (const deque<T>& dq) {
-		if (first == dq.first)
-			return *this;
-		list_clear(first);
-		list_copy(dq.first, first, last);
-		count = dq.count;
+template <typename T>
+deque<T>& deque<T>::operator = (const deque<T>& dq) {
+	if (first == dq.first)
 		return *this;
+	list_clear(first);
+	list_copy(dq.first, first, last);
+	count = dq.count;
+	return *this;
+}
+
+template <typename T>
+T& deque<T>::front() {
+	assert(count != 0);
+	return first->data();
+}
+
+template <typename T>
+T deque<T>::front() const {
+	assert(count != 0);
+	return first->data();
+}
+
+template <typename T>
+T& deque<T>::back() {
+	assert(count != 0);
+	return last->data();
+}
+
+template <typename T>
+T deque<T>::back() const {
+	assert(count != 0);
+	return last->data();
+}
+
+template <typename T>
+void deque<T>::push_front(const T& entry) {
+	list_head_insert(first, entry);
+	count++;
+}
+
+template <typename T>
+void deque<T>::push_back(const T& entry) {
+	assert(!empty());
+	node<T>* ptr;
+	ptr = last;
+	list_insert(ptr, entry);
+	last = ptr->link();
+	count++;
+}
+
+template <typename T>
+void deque<T>::pop_front() {
+	assert(!empty());
+	list_head_remove(first);
+	count--;
+}
+
+template <typename T>
+void deque<T>::pop_back() {
+	assert(!empty());
+	node<T>* ptr;
+	ptr = first;
+	while (ptr->link() != last) {
+		ptr = ptr->link();
 	}
+	list_remove(ptr);
+	last = ptr;
+	count--;
+}
 
-	template <typename T>
-	T& deque<T>::front() {
-		assert(count != 0);
-		return first->data();
+template <typename T>
+typename deque<T>::size_type deque<T>::size() const {
+	return count;
+}
+
+template <typename T>
+bool deque<T>::empty() const {
+	return count == 0;
+}
+
+template <typename U>
+bool operator == (const deque<U>& dq1, const deque<U>& dq2) {
+	if (dq1.count != dq2.count || dq1.first != dq2.first || dq1.last != dq2.last)
+		return false;
+	else {
+		typename deque<U>::size_type i;
+		node<U>* ptr1, ptr2;
+		ptr1 = dq1.first;
+		ptr2 = dq2.first;
+		for (i = 0; i < dq1.count; i++) {
+			if (ptr1->data != ptr2->data())
+				return false;
+			else {
+				ptr1 = ptr1->link();
+				ptr2 = ptr2->link();
+			}
+		}
 	}
+	return true;
+}
 
-	template <typename T>
-	T deque<T>::front() const {
-		assert(count != 0);
-		return first->data();
+template <typename U>
+std::ostream& operator<< (std::ostream& out, const deque<U>& dq) {
+	typename deque<U>::size_type i;
+	node<U>* ptr;
+	i = 0;
+	ptr = dq.first;
+	while (i < dq.count) {
+		out << ptr->data() << " ";
+		ptr = ptr->link();
+		i++;
 	}
-
-	template <typename T>
-	T& deque<T>::back() {
-		assert(count != 0);
-		return last->data();
-	}
-
-	template <typename T>
-	T deque<T>::back() const {
-		assert(count != 0);
-		return last->data();
-	}
-
-	template <typename T>
-	void deque<T>::push_front(const T& entry) {
-		//TODO:
-	}
-
-	template <typename T>
-	void deque<T>::push_back(const T& entry) {
-		//TODO:
-	}
-
-
+	return out;
 }
