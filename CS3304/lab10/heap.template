@@ -1,0 +1,91 @@
+/*
+ * heap.template
+ *
+ *  Created on: Jul 13, 2017
+ *      Author: paul thim
+ */
+#include <vector>
+#include <iostream>
+#include <cassert>
+
+template <typename T>
+heap<T>::heap() {
+}
+
+template <typename T>
+size_t heap<T>::size() const {
+	return v.size();
+}
+
+template <typename T>
+bool heap<T>::is_empty() const {
+	return (v.size() == 0);
+}
+
+template <typename T>
+void heap<T>::insert(const T& item) {
+	v.push_back(item);
+
+	size_t i = v.size() - 1; // Begin reheapification
+	while (v[i] > v[(i - 1) / 2]) {
+		T parent = v[(i - 1) / 2];
+		v[(i - 1) / 2] = v[i];
+		v[i] = parent;
+		i = (i - 1) / 2;
+	}
+}
+
+template <typename T>
+void heap<T>::remove() {
+	assert(!is_empty());
+
+	v[0] = v[v.size() - 1];
+	v.pop_back();
+
+	size_t i = 0; // Begin reheapification
+	bool reheap = true;
+	while (reheap) {
+		reheap = false;
+		if ((2 * i + 1) < v.size()) {
+			size_t ic = max_child(i); // Accounts for queue, see comment
+			if (v[i] < v[ic]) {
+				T child = v[ic];
+				v[ic] = v[i];
+				v[i] = child;
+				reheap = true;
+			}
+		}
+	}
+}
+
+template <typename T>
+T heap<T>::max() const {
+	assert(!is_empty());
+	T t;
+	t = v[0];
+	return t;
+}
+
+template <typename T>
+T& heap<T>::max() {
+	assert(!is_empty());
+	return v[0];
+}
+
+// This implementation of the Heap ends up completing the requirements for
+// the Priority Queue template. The following function is only called by
+// the remove function during the reheap step. If there is a child, there
+// are three possible return values: the larger child, the only child, or
+// the 'left-most' child. Since the heap builds a complete binary tree by
+// default, the left-most child will be the older of the two. Thus the
+// 'queue' part of the priority queue is met.
+template <typename T>
+size_t heap<T>::max_child(size_t index) const {
+	assert(2 * index + 1 < v.size()); // item at index has at least one child
+	size_t ic;
+	ic = 2 * index + 1;
+	if (ic + 1 < v.size()) // item has second child
+		if (v[ic] < v[ic + 1])
+			ic++; // second child is larger, increment to that index
+	return ic;
+}

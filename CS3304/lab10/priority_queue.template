@@ -1,0 +1,45 @@
+/*
+ * priority_queue.template
+ *
+ *  Created on: Jul 13, 2017
+ *      Author: paul
+ */
+
+#include "heap.h"
+#include <cassert>
+
+template <typename T>
+priority_queue<T>::priority_queue() {
+
+}
+
+template <typename T>
+void priority_queue<T>::pop() {
+	assert(!empty());
+	h.remove(); // See comment within heap.template
+}
+
+template <typename T>
+void priority_queue<T>::push(const T& item) {
+	h.insert(item);
+}
+
+template <typename T>
+bool priority_queue<T>::empty() const {
+	return (h.is_empty());
+	return true;
+}
+
+template <typename T>
+size_t priority_queue<T>::size() const {
+	return h.size();
+}
+
+template <typename T>
+T priority_queue<T>::top() const {
+	assert(!empty());
+	T t;
+	t = h.max();
+	return t;
+}
+

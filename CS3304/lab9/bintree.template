@@ -46,10 +46,10 @@ namespace main_savitch_10
     
     //	I opted for a loop rather than a recursive method. Looping made it much easier to manage
     //	the order of processing.
-    template <class Process, class BTNode> 
+    template <class Process, class BTNode, class Item>
     void breadthfirst(Process f, BTNode* node_ptr) {
     // Library facilities used: queue
-    	queue<BTNode*> q;
+    	std::queue<BTNode*> q;
     	
     	if (node_ptr != NULL) {	//ensure that the first provided pointer is not a null pointer
     		q.push(node_ptr);	//Push it to the queue
@@ -60,7 +60,7 @@ namespace main_savitch_10
     			
     			if (n != NULL) { // n could be a null pointer
     				q.push(n->left());	// Push both children to the queue
-					q.push(n-right());
+					q.push(n->right());
 					f(n->data());	// Run the function
     			}
     		}

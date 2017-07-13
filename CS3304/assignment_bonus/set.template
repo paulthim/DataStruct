@@ -1,0 +1,140 @@
+#include <iostream>
+#include <cassert>
+#include <algorithm>
+
+namespace main_savitch_11
+{
+template <class Item>
+set<Item>::set() {
+	data_count = 0;
+	child_count = 0;
+}
+
+
+template <class Item>
+set<Item>::set(const set& source) {
+	std::cout << "Copy Constructor called" << std::endl;
+	child_count = source->child_count;
+	data_count = source->data_count;
+}
+
+template <class Item>
+void set<Item>::operator = (const set& source) {
+	std::cout << "Assignment operator overload" << std::endl;
+	this->clear();
+	data = new Item[source->MAXIMUM+1];
+	copy(source->data, source->data + source->data_count, data);
+	data_count = source->data_count;
+	subset = new set*[source->MAXIMUM+2];
+}
+
+template <class Item>
+void set<Item>::clear() {
+	//std::cout << "Clear function called" << std::endl;
+	for (size_t i = 0; i < child_count; i++) {
+		subset[i]->clear();
+		delete subset[i];
+	}
+	child_count = 0;
+	data_count = 0;
+}
+
+template <class Item>
+bool set<Item>::insert(const Item& entry) {
+	std::cout << "Insert function called" << std::endl;
+	return true;
+}
+
+template <class Item>
+std::size_t set<Item>::erase(const Item& target) {
+	std::cout << "Erase function called" << std::endl;
+	return 0;
+}
+
+template <class Item>
+std::size_t set<Item>::count(const Item& target) const {
+	//std::cout << "Count function called" << std::endl;
+	std::size_t i;
+	// increment through data until either i==data_count or data[i] > target
+	i = 0;
+	while ((i < data_count) && (data[i] < target))
+		i++;
+	if ((i < data_count) && !(target < data[i]))
+		i = 1;
+	else if (this->is_leaf()) {
+		i = 0;
+	} else {
+		i = subset[i]->count(target);
+	}
+	return i;
+}
+
+template <class Item>
+void set<Item>::print(int indent) const {
+	std::cout << "Print function called" << std::endl;
+}
+
+template <class Item>
+bool set<Item>::loose_insert(const Item& entry) {
+	// Precondition: The entire B-tree is valid.
+	// Postcondition: If entry was already in the set, then the set is unchanged 
+	// and the return value is false. Otherwise, the entry has been added to the 
+	// set, the return value is true, and the entire B-tree is still
+	// valid EXCEPT that the number of entries in the root of this set might be 
+	// one more than the allowed maximum.
+	std::cout << "Loose insert called" << std::endl;
+	std::size_t i;
+	i = 0;
+	while ((i < data_count) && (data[i] < entry))
+		i++;
+	if (!(entry < data[i]))
+		return false;
+	else if (this->is_leaf()) {
+		Item en = entry;
+		Item n;
+		while (i < data_count) {
+			n = data[i];
+			data[i] = en;
+			en = n;
+			i++;
+		}
+		data[i] = en;
+		data_count++;
+		return true;
+	} else {
+		bool subset_insert;
+		subset_insert = subset[i]->loose_insert(entry);
+		if (subset[i]->data_count > MAXIMUM+1) {
+			this->fix_excess(i);
+		}
+		return subset_insert;
+	}
+}
+
+template <class Item>
+bool set<Item>::loose_erase(const Item& target) {
+	std::cout << "Loose erase called" << std::endl;
+	return true;
+}
+
+template <class Item>
+void set<Item>::remove_biggest(Item& removed_entry) {
+	std::cout << "Remove_biggest called" << std::endl;
+}
+
+template <class Item>
+void set<Item>::fix_excess(std::size_t i) {
+	std::cout << "Fix excess called" << std::endl;
+	assert(i < child_count);
+	set* set_ptr;
+	set_ptr = subset[i];
+	subset[i]->clear();
+	subset[i]->subset[0] = set_ptr;
+	
+}
+
+template <class Item>
+void fix_shortage(std::size_t i) {
+	std::cout << "Fix shortage called" << std::endl;
+}
+}
