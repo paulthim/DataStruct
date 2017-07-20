@@ -1,0 +1,14 @@
+5
+Bob
+Sally
+Barbara
+Steve
+Jane
+Bob Sally
+Barbara Sally
+Sally Bob
+Steve Bob
+Bob Steve
+Bob Jane
+Barbara Steve
+Steve Jane

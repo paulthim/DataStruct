@@ -72,7 +72,7 @@ namespace main_savitch_11
         void print(int indent) const;
     private:
         // MEMBER CONSTANTS
-        static const std::size_t MINIMUM = 200;
+        static const std::size_t MINIMUM = 2; // using example tree from book
         static const std::size_t MAXIMUM = 2 * MINIMUM;
         // MEMBER VARIABLES
         std::size_t data_count;

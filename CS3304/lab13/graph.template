@@ -1,0 +1,68 @@
+/*
+ * graph.template
+ *
+ *  Created on: Jul 18, 2017
+ *      Author: Paul Thim
+ */
+
+#include <cassert>
+#include <cstdlib>
+#include <set>
+
+namespace lab_13
+{
+	template <class Item>
+	void graph<Item>::add_vertex(const Item& label) {
+	// Library facilities used: cassert, cstlib, set
+		assert(size() < MAXIMUM);
+		labels[many_vertices] = label;
+		many_vertices++;
+	}
+
+	template <class Item>
+	void graph<Item>::add_edge(std::size_t source, std::size_t target) {
+	// Library facilities used: cassert, cstlib
+		assert(source < size() && target < size());
+		edges[source].insert(target); // set will not add a duplicate
+	}
+
+	template <class Item>
+	void graph<Item>::remove_edge(std::size_t source, std::size_t target) {
+	// Library facilities used: cassert, cstlib
+		assert(source < size() && target < size());
+		edges[source].erase(target);
+	}
+
+	template <class Item>
+	Item& graph<Item>::operator [ ] (std::size_t vertex) {
+	// Library facilities used: cassert, cstlib
+		assert(vertex < size());
+		return labels[vertex];
+	}
+
+	template <class Item>
+	bool graph<Item>::is_edge(std::size_t source, std::size_t target) const {
+	// Library facilities used: cassert, cstlib
+		assert(source < size() && target < size());
+		if (edges[source].count(target) != 0)
+			return true;
+		else return false;
+	}
+
+	template <class Item>
+	std::set<std::size_t> graph<Item>::neighbors(std::size_t vertex) const {
+	// Library facilities used: cassert, cstlib, set
+		assert(vertex < size());
+		std::set<size_t> neighbors;
+		neighbors = edges[vertex];
+		return neighbors;
+	}
+
+	template <class Item>
+	Item graph<Item>::operator[ ] (std::size_t vertex) const {
+	// Library facilities used: cassert, cstlib
+		assert(vertex < size());
+		Item label = labels[vertex];
+		return label;
+	}
+}

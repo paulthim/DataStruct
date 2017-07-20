@@ -130,7 +130,12 @@ void set<Item>::fix_excess(std::size_t i) {
 	set_ptr = subset[i];
 	subset[i]->clear();
 	subset[i]->subset[0] = set_ptr;
-	
+	// Take the middle item of set_ptr, pass it up to the root.
+	// Middle item is going to be set_ptr[MINIMUM];
+	// Split set_ptr in half, splitting its data and subset arrays
+	// Leftside set will range from set_ptr[0] - set_ptr[MINIMUM-1]
+	// Rightside set will range from set_ptr[MINIMUM+1] - set_ptr[MAXIMUM]
+	// data and subset will need to be shifted appropriately
 }
 
 template <class Item>
